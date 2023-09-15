@@ -5,10 +5,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { FileVideo, Github, Upload } from 'lucide-react'
+import { FileVideo, Github, Upload, Wand2 } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
+import { Slider } from './components/ui/slider'
 import { Textarea } from './components/ui/textarea'
 
 export function App() {
@@ -50,7 +51,7 @@ export function App() {
             prompt para adicionar o conteúdo da transcrição do video selecionado
           </p>
         </div>
-        <aside className="w-80 space-y-4">
+        <aside className="w-80 space-y-2">
           <form className="space-y-4">
             <label
               className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed text-sm hover:bg-primary/10"
@@ -91,6 +92,24 @@ export function App() {
           <Separator />
 
           <form className="space-y-6">
+            {/* Prompt */}
+            <div className="space-y-2">
+              <Label>Modelo</Label>
+
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione um prompt..." />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="title">Titulo do YouTube</SelectItem>
+                  <SelectItem value="description">
+                    Descrição do YouTube
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Modelo */}
             <div className="space-y-2">
               <Label>Modelo</Label>
@@ -114,13 +133,24 @@ export function App() {
 
             <Separator />
 
-            <div className="space-y-2">
+            {/* Temperatura */}
+            <div className="space-y-4">
               <Label>Temperatura</Label>
-              <span className="block text-xs italic text-muted-foreground">
+
+              <Slider min={0} max={1} step={0.1} />
+
+              <span className="block text-xs italic leading-relaxed text-muted-foreground">
                 Valores mais altos tendem a deixar o resultado mais criativo e
                 com possíveis errors
               </span>
             </div>
+
+            <Separator />
+
+            <Button type="submit" className="w-full">
+              Executar
+              <Wand2 className="ml-2 h-4 w-4" />
+            </Button>
           </form>
         </aside>
       </main>
