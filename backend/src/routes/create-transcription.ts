@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify'
+import { createReadStream } from 'node:fs'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 
@@ -25,6 +26,9 @@ export async function createTranscription(app: FastifyInstance) {
 				message: 'Video not found',
 			})
 		}
+
+		const audioPath = video.path
+		const audioReadStream = createReadStream(audioPath)
 
 		return { videoId, prompt, video }
 	})
