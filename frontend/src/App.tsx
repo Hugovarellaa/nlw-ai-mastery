@@ -58,6 +58,8 @@ export function App() {
               accept="video/mp4"
               className="sr-only"
             />
+
+            <Separator />
           </form>
           <form className="space-y-6"></form>
         </aside>
