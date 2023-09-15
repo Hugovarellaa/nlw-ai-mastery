@@ -1,6 +1,7 @@
 import { Github } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Separator } from './components/ui/separator'
+import { Textarea } from './components/ui/textarea'
 
 export function App() {
   return (
@@ -24,7 +25,17 @@ export function App() {
 
       <main className="flex flex-1 gap-6 p-6">
         <div className="flex flex-1 flex-col gap-4">
-          <div className="grid flex-1 grid-rows-2 gap-4"></div>
+          <div className="grid flex-1 grid-rows-2 gap-4">
+            <Textarea
+              className="resize-none p-4 leading-relaxed"
+              placeholder="Inclua o prompt para a IA..."
+            />
+            <Textarea
+              className="resize-none p-4 leading-relaxed"
+              placeholder="Resultado gerado pela IA..."
+              readOnly
+            />
+          </div>
           <p className="text-sm text-muted-foreground">
             Lembre-se: Você pode utilizar a variáveis{' '}
             <code className="text-purple-400">{' {transcription} '}</code>no seu
