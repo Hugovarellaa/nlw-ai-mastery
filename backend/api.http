@@ -27,3 +27,14 @@ Content-Type: application/json
 {
   "prompt": ""
 }
+
+###
+# @name generate-ai-completion
+POST http://localhost:3333/ai/completion
+Content-Type: application/json
+
+{
+  "videoId": "37ac2604-019b-4941-be91-7520a93dcd80",
+  "template": "Gere um resumo susito da transcrisão do video informado a seguir: ''' {transcription} '''",
+  "temperatura": 0.6
+}

@@ -1,11 +1,12 @@
 import fastify from 'fastify'
 import { createTranscription } from './routes/create-transcription'
-import { GetAllPrompts } from './routes/get-all-prompts'
+import { generateAiCompletionRoute } from './routes/generate-ai-completion'
+import { getAllPrompts } from './routes/get-all-prompts'
 import { uploadVideoRoute } from './routes/upload-video'
 
 export const app = fastify()
 
-app.register(GetAllPrompts, {
+app.register(getAllPrompts, {
 	prefix: '/prompts',
 })
 
@@ -15,4 +16,8 @@ app.register(uploadVideoRoute, {
 
 app.register(createTranscription, {
 	prefix: '/videos',
+})
+
+app.register(generateAiCompletionRoute, {
+	prefix: '/ai/completion',
 })
