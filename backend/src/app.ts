@@ -1,7 +1,8 @@
 import fastify from 'fastify'
+import { GetAllPrompts } from './routes/get-all-prompts'
 
 export const app = fastify()
 
-app.get('/', () => {
-	return 'Hello World'
+app.register(GetAllPrompts, {
+	prefix: '/prompts',
 })
