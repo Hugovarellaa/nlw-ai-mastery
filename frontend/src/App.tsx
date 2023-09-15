@@ -4,7 +4,7 @@ import { Separator } from './components/ui/separator'
 
 export function App() {
   return (
-    <div>
+    <div className="flex min-h-screen flex-col">
       <header className="flex w-full items-center justify-between border-b px-6 py-3">
         <h1 className="text-xl font-bold">Upload.AI</h1>
 
@@ -21,6 +21,18 @@ export function App() {
           </Button>
         </nav>
       </header>
+
+      <main className="flex flex-1 gap-6 p-6">
+        <div className="flex flex-1 flex-col gap-4">
+          <div className="grid flex-1 grid-rows-2 gap-4"></div>
+          <p className="text-sm text-muted-foreground">
+            Lembre-se: Você pode utilizar a variáveis{' '}
+            <code className="text-purple-400">{' {transcription} '}</code>no seu
+            prompt para adicionar o conteúdo da transcrição do video selecionado
+          </p>
+        </div>
+        <aside className="w-80">sidebar</aside>
+      </main>
     </div>
   )
 }
