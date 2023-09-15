@@ -1,5 +1,6 @@
 import { Github } from 'lucide-react'
 import { Button } from './components/ui/button'
+import { Separator } from './components/ui/separator'
 
 export function App() {
   return (
@@ -11,6 +12,9 @@ export function App() {
           <span className="text-sm text-muted-foreground">
             Desenvolvido com 💜 no NLW da Rocketseat
           </span>
+
+          <Separator orientation="vertical" className="h-6" />
+
           <Button variant="outline" className="flex items-center gap-2">
             <Github className="h-4 w-4" />
             Github
