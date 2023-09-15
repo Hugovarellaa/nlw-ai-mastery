@@ -21,9 +21,9 @@ Content-Type: audio/mpeg
 
 ###
 # @name create-transcription
-POST http://localhost:3333/videos/66e7a803-9c57-4d31-9536-66f7a2da58ae/transcription
+POST http://localhost:3333/videos/37ac2604-019b-4941-be91-7520a93dcd80/transcription
 Content-Type: application/json
 
 {
-  "prompt": "Testando uma transcription"
+  "prompt": ""
 }
