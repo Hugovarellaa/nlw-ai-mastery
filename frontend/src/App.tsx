@@ -1,3 +1,10 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { FileVideo, Github, Upload } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { Label } from './components/ui/label'
@@ -43,8 +50,8 @@ export function App() {
             prompt para adicionar o conteúdo da transcrição do video selecionado
           </p>
         </div>
-        <aside className="w-80 space-y-6">
-          <form className="space-y-6">
+        <aside className="w-80 space-y-4">
+          <form className="space-y-4">
             <label
               className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed text-sm hover:bg-primary/10"
               htmlFor="video"
@@ -62,7 +69,7 @@ export function App() {
 
             <Separator />
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               {/* Estilizar barra de rolagem da Textarea conforme o estilo da aplicação */}
               <Label htmlFor="transcription_prompt">
                 Prompt de transcrição
@@ -80,7 +87,41 @@ export function App() {
               <Upload className="ml-2 h-4 w-4" />
             </Button>
           </form>
-          <form className="space-y-6"></form>
+
+          <Separator />
+
+          <form className="space-y-6">
+            {/* Modelo */}
+            <div className="space-y-2">
+              <Label>Modelo</Label>
+
+              <Select disabled defaultValue="gpt3-turbo">
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="gpt3-turbo">GPT 3.5</SelectItem>
+                  <SelectItem value="gpt3-turbo-16k">
+                    GPT 3.5-Turbo 16k
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="block text-xs italic text-muted-foreground">
+                Você poderá customizar essa opção em breve
+              </span>
+            </div>
+
+            <Separator />
+
+            <div className="space-y-2">
+              <Label>Temperatura</Label>
+              <span className="block text-xs italic text-muted-foreground">
+                Valores mais altos tendem a deixar o resultado mais criativo e
+                com possíveis errors
+              </span>
+            </div>
+          </form>
         </aside>
       </main>
     </div>
