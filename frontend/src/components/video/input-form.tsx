@@ -1,3 +1,4 @@
+import { api } from '@/lib/axios'
 import { initFFmpeg } from '@/lib/ffmpeg'
 import { fetchFile } from '@ffmpeg/util'
 import { Separator } from '@radix-ui/react-select'
@@ -70,7 +71,21 @@ export function Video() {
     // 2 - Upload do video para API OPEN AI e pro Backend é + rápido
 
     const audioFile = await convertVideoToAudio(videoFile)
-    // const formData = new FormData()
+
+    // transformando dados do video em multipart-form para salvar no back-end
+    const data = new FormData()
+    data.append('file', audioFile)
+
+    // cadastrando video no back-end e buscando o id do video
+    const response = await api.post('/upload-video', data)
+    const videoId = response.data.video.id
+
+    // Gerar transcrição do video
+    await api.post(`/videos/${videoId}/transcription`, {
+      prompt,
+    })
+
+    console.log('Finalizou')
   }
 
   async function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
