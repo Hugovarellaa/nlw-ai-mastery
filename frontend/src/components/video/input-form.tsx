@@ -1,21 +1,127 @@
+import { initFFmpeg } from '@/lib/ffmpeg'
+import { fetchFile } from '@ffmpeg/util'
 import { Separator } from '@radix-ui/react-select'
 import { FileVideo, Upload } from 'lucide-react'
+import { ChangeEvent, FormEvent, useMemo, useRef, useState } from 'react'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Textarea } from '../ui/textarea'
 
 export function Video() {
+  const [videoFile, setVideoFile] = useState<File | null>(null)
+
+  const promptIntRef = useRef<HTMLTextAreaElement>(null)
+
+  async function convertVideoToAudio(video: File) {
+    console.log('Starting video converter...')
+
+    const ffmpeg = await initFFmpeg()
+
+    // Quando usando o conceito de Assembly Web e como ser o ffmpeg nao tivesse rodando localmente...(Container docker)
+    // writeFile -> coloca um arquivo dentro do contexto o ffmpeg
+    // fetchFile -> Recebe um arquivo e converte para uma representação binaria do arquivo...
+    await ffmpeg.writeFile('input.mp4', await fetchFile(video))
+
+    // Quando estiver dando erro des-comente essas linhas
+    // ffmpeg.on('log', (log) => {
+    //   console.log(log)
+    // })
+
+    ffmpeg.on('progress', (progress) => {
+      console.log('Converte progress: ' + Math.round(progress.progress * 100))
+    })
+
+    // Comando pego no Chat GP3
+    await ffmpeg.exec([
+      '-i',
+      'input.mp4',
+      '-map',
+      '0:a',
+      '-b:a',
+      '20k',
+      '-acodec',
+      'libmp3lame',
+      'output.mp3',
+    ])
+
+    const data = await ffmpeg.readFile('output.mp3')
+
+    const audioFileBlob = new Blob([data], { type: 'audio/mpeg' })
+    const audioFile = new File([audioFileBlob], 'audio.mp3', {
+      type: 'audio/mpeg',
+    })
+
+    console.log('Converting audio Finished')
+
+    return audioFile
+  }
+
+  async function handleUploadVide(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const prompt = promptIntRef.current?.value
+
+    if (!videoFile) {
+      return
+    }
+
+    // Converte o video em Audio
+    // 1 - motivo - API OPEN AI so suporta arquivo até 25MB
+    // 2 - Upload do video para API OPEN AI e pro Backend é + rápido
+
+    const audioFile = await convertVideoToAudio(videoFile)
+    // const formData = new FormData()
+
+    console.log(audioFile)
+    console.log(prompt)
+  }
+
+  async function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
+    const { files } = event.currentTarget
+    if (!files) {
+      return
+    }
+
+    const selectedFiles = files[0]
+
+    setVideoFile(selectedFiles)
+  }
+
+  const previewURL = useMemo(() => {
+    if (!videoFile) {
+      return null
+    }
+
+    return URL.createObjectURL(videoFile)
+  }, [videoFile])
+
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleUploadVide}>
       <label
         className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-dashed text-sm hover:bg-primary/10"
         htmlFor="video"
       >
-        <FileVideo className="h-4 w-4" />
-        Selecione um vide
+        {previewURL ? (
+          <video
+            src={previewURL}
+            controls={false}
+            className="pointer-events-none"
+          />
+        ) : (
+          <>
+            <FileVideo className="h-4 w-4" />
+            Selecione um vide
+          </>
+        )}
       </label>
 
-      <input type="file" id="video" accept="video/mp4" className="sr-only" />
+      <input
+        type="file"
+        id="video"
+        accept="video/mp4"
+        className="sr-only"
+        onChange={handleFileSelected}
+      />
 
       <Separator />
 
@@ -27,6 +133,7 @@ export function Video() {
           id="transcription_prompt"
           className="h-20 leading-relaxed"
           placeholder="Inclua palavras-chaves mencionadas no video separadas por vírgula (,)"
+          ref={promptIntRef}
         />
       </div>
 
