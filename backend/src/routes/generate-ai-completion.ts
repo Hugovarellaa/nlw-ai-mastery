@@ -1,3 +1,4 @@
+import { OpenAIStream, streamToResponse } from 'ai'
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { openai } from '../lib/openai'
@@ -39,8 +40,17 @@ export async function generateAiCompletionRoute(app: FastifyInstance) {
 					content: promptMessage,
 				},
 			],
+			stream: true,
 		})
 
-		return { response }
+		// retornando a resposta da Open ai ao pouco enquanto carrega
+		const stream = OpenAIStream(response)
+
+		streamToResponse(stream, reply.raw, {
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+			},
+		})
 	})
 }
