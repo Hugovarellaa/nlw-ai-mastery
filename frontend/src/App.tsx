@@ -6,7 +6,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Wand2 } from 'lucide-react'
-import { Header } from './components/Header'
+import { Header } from './components/header'
+import { PromptSelect } from './components/prompt-select'
 import { Button } from './components/ui/button'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
@@ -47,20 +48,8 @@ export function App() {
           <form className="space-y-6">
             {/* Prompt */}
             <div className="space-y-2">
-              <Label>Modelo</Label>
-
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione um prompt..." />
-                </SelectTrigger>
-
-                <SelectContent>
-                  <SelectItem value="title">Titulo do YouTube</SelectItem>
-                  <SelectItem value="description">
-                    Descrição do YouTube
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <Label>Prompt</Label>
+              <PromptSelect />
             </div>
 
             {/* Modelo */}
