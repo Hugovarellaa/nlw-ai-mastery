@@ -17,7 +17,11 @@ const statusMessage = {
   success: 'Sucesso...',
 }
 
-export function Video() {
+interface Props {
+  onVideoUploaded: (id: string) => void
+}
+
+export function Video({ onVideoUploaded }: Props) {
   const [videoFile, setVideoFile] = useState<File | null>(null)
   const [status, setStatus] = useState<Status>('waiting')
 
@@ -101,6 +105,7 @@ export function Video() {
     })
 
     setStatus('success')
+    onVideoUploaded(videoId)
   }
 
   async function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
