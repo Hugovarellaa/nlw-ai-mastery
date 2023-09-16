@@ -6,6 +6,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Wand2 } from 'lucide-react'
+import { useState } from 'react'
 import { Header } from './components/header'
 import { PromptSelect } from './components/prompt-select'
 import { Button } from './components/ui/button'
@@ -16,6 +17,8 @@ import { Textarea } from './components/ui/textarea'
 import { Video } from './components/video/input-form'
 
 export function App() {
+  const [temperature, setTemperature] = useState(0.5)
+
   function handlePromptSelected(template: string) {
     console.log(template)
   }
@@ -83,7 +86,15 @@ export function App() {
             <div className="space-y-4">
               <Label>Temperatura</Label>
 
-              <Slider min={0} max={1} step={0.1} />
+              <Slider
+                min={0}
+                max={1}
+                step={0.1}
+                value={[temperature]}
+                onValueChange={(value) => setTemperature(value[0])}
+                // O Slider e sempre tratado como 2
+                // por isso usamos no modelo de array para trata-lo
+              />
 
               <span className="block text-xs italic leading-relaxed text-muted-foreground">
                 Valores mais altos tendem a deixar o resultado mais criativo e
