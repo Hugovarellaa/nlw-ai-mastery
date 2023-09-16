@@ -71,9 +71,6 @@ export function Video() {
 
     const audioFile = await convertVideoToAudio(videoFile)
     // const formData = new FormData()
-
-    console.log(audioFile)
-    console.log(prompt)
   }
 
   async function handleFileSelected(event: ChangeEvent<HTMLInputElement>) {
